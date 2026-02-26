@@ -1,101 +1,59 @@
-generator client {
-  provider = "prisma-client-js"
+// src/scripts/seed.ts
+import { PrismaClient, Role } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+async function main() {
+  // First create a church
+  const church = await prisma.church.create({
+    data: {
+      name: "Central Church",
+      address: "123 Main Street",
+    },
+  });
+
+  // Then create multiple users with different roles
+  await prisma.user.createMany({
+    data: [
+      {
+        name: "Admin User",
+        email: "admin@example.com",
+        password: "securepassword",
+        role: Role.ADMIN,
+        churchId: church.id,
+      },
+      {
+        name: "Pastor John",
+        email: "pastor@example.com",
+        password: "securepassword",
+        role: Role.PASTOR,
+        churchId: church.id,
+      },
+      {
+        name: "Finance Officer",
+        email: "finance@example.com",
+        password: "securepassword",
+        role: Role.FINANCE,
+        churchId: church.id,
+      },
+      {
+        name: "Member Jane",
+        email: "member@example.com",
+        password: "securepassword",
+        role: Role.MEMBER,
+        churchId: church.id,
+      },
+    ],
+  });
+
+  console.log("Seed data created successfully!");
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum Role {
-  ADMIN
-  PASTOR
-  FINANCE
-  MEMBER
-}
-
-enum MemberStatus {
-  ACTIVE
-  INACTIVE
-}
-
-enum FinanceType {
-  INCOME
-  EXPENSE
-}
-
-model Church {
-  id        String   @id @default(uuid())
-  name      String
-  address   String?
-  createdAt DateTime @default(now())
-
-  users        User[]
-  members      Member[]
-  visitors     Visitor[]
-  announcements Announcement[]
-  finances     Finance[]
-}
-
-model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role
-  createdAt DateTime @default(now())
-
-  church   Church @relation(fields: [churchId], references: [id])
-  churchId String
-}
-
-model Member {
-  id        String       @id @default(uuid())
-  firstName String
-  lastName  String
-  phone     String?
-  email     String?
-  department String?
-  status    MemberStatus @default(ACTIVE)
-  createdAt DateTime     @default(now())
-
-  church   Church @relation(fields: [churchId], references: [id])
-  churchId String
-}
-
-model Visitor {
-  id         String   @id @default(uuid())
-  firstName  String
-  lastName   String
-  phone      String?
-  email      String?
-  visitDate  DateTime @default(now())
-  followUp   Boolean  @default(false)
-  notes      String?
-  createdAt  DateTime @default(now())
-
-  church   Church @relation(fields: [churchId], references: [id])
-  churchId String
-}
-
-model Announcement {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
-  createdAt DateTime @default(now())
-
-  church   Church @relation(fields: [churchId], references: [id])
-  churchId String
-}
-
-model Finance {
-  id          String      @id @default(uuid())
-  title       String
-  amount      Float
-  type        FinanceType
-  description String?
-  createdAt   DateTime    @default(now())
-
-  church   Church @relation(fields: [churchId], references: [id])
-  churchId String
-}
+main()
+  .catch((e) => {
+    console.error("Error seeding database:", e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
