@@ -4,14 +4,14 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "strict": true,
-
     "esModuleInterop": true,
     "verbatimModuleSyntax": false,
-
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "exclude": ["node_modules", "src/scripts"]
 }
