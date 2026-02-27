@@ -8,10 +8,14 @@ datasource db {
 }
 
 model Church {
-  id      String  @id @default(uuid())
-  name    String
-  address String?
-  users   User[]
+  id            String         @id @default(uuid())
+  name          String
+  address       String?
+  users         User[]
+  members       Member[]
+  visitors      Visitor[]
+  finances      Finance[]
+  announcements Announcement[]
 }
 
 model User {
@@ -22,6 +26,44 @@ model User {
   role     Role
   church   Church  @relation(fields: [churchId], references: [id])
   churchId String
+}
+
+model Member {
+  id       String  @id @default(uuid())
+  name     String
+  email    String?
+  phone    String?
+  church   Church  @relation(fields: [churchId], references: [id])
+  churchId String
+}
+
+model Visitor {
+  id        String   @id @default(uuid())
+  name      String
+  email     String?
+  phone     String?
+  visitDate DateTime @default(now())
+  church    Church   @relation(fields: [churchId], references: [id])
+  churchId  String
+}
+
+model Finance {
+  id        String   @id @default(uuid())
+  title     String
+  amount    Float
+  type      String
+  createdAt DateTime @default(now())
+  church    Church   @relation(fields: [churchId], references: [id])
+  churchId  String
+}
+
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  church    Church   @relation(fields: [churchId], references: [id])
+  churchId  String
 }
 
 enum Role {
