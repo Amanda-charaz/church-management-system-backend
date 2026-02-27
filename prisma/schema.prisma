@@ -1,59 +1,32 @@
-// src/scripts/seed.ts
-import { PrismaClient, Role } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
-async function main() {
-  // First create a church
-  const church = await prisma.church.create({
-    data: {
-      name: "Central Church",
-      address: "123 Main Street",
-    },
-  });
-
-  // Then create multiple users with different roles
-  await prisma.user.createMany({
-    data: [
-      {
-        name: "Admin User",
-        email: "admin@example.com",
-        password: "securepassword",
-        role: Role.ADMIN,
-        churchId: church.id,
-      },
-      {
-        name: "Pastor John",
-        email: "pastor@example.com",
-        password: "securepassword",
-        role: Role.PASTOR,
-        churchId: church.id,
-      },
-      {
-        name: "Finance Officer",
-        email: "finance@example.com",
-        password: "securepassword",
-        role: Role.FINANCE,
-        churchId: church.id,
-      },
-      {
-        name: "Member Jane",
-        email: "member@example.com",
-        password: "securepassword",
-        role: Role.MEMBER,
-        churchId: church.id,
-      },
-    ],
-  });
-
-  console.log("Seed data created successfully!");
+generator client {
+  provider = "prisma-client-js"
 }
 
-main()
-  .catch((e) => {
-    console.error("Error seeding database:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Church {
+  id      String  @id @default(uuid())
+  name    String
+  address String?
+  users   User[]
+}
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  email    String  @unique
+  password String
+  role     Role
+  church   Church  @relation(fields: [churchId], references: [id])
+  churchId String
+}
+
+enum Role {
+  ADMIN
+  PASTOR
+  FINANCE
+  MEMBER
+}
