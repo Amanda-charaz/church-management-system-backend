@@ -4,5 +4,10 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "exclude": ["node_modules", "dist", "src/scripts"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/scripts",
+    "prisma.config.ts"
+  ]
 }
