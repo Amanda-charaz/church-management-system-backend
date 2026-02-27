@@ -34,7 +34,8 @@ model Member {
   lastName   String
   email      String?
   phone      String?
-  department String?   // ✅ added
+  department String?
+  status     String?   // ✅ ADD THIS
   createdAt  DateTime  @default(now())
   church     Church    @relation(fields: [churchId], references: [id])
   churchId   String
