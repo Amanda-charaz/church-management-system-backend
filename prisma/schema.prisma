@@ -29,14 +29,15 @@ model User {
 }
 
 model Member {
-  id        String   @id @default(uuid())
-  firstName String
-  lastName  String
-  email     String?
-  phone     String?
-  createdAt DateTime @default(now())
-  church    Church   @relation(fields: [churchId], references: [id])
-  churchId  String
+  id         String   @id @default(uuid())
+  firstName  String
+  lastName   String
+  email      String?
+  phone      String?
+  department String?   // ✅ added
+  createdAt  DateTime  @default(now())
+  church     Church    @relation(fields: [churchId], references: [id])
+  churchId   String
 }
 
 model Visitor {
@@ -45,9 +46,11 @@ model Visitor {
   lastName  String
   email     String?
   phone     String?
-  visitDate DateTime @default(now())
-  createdAt DateTime @default(now())
-  church    Church   @relation(fields: [churchId], references: [id])
+  notes     String?   // ✅ added
+  followUp  Boolean?  // ✅ added
+  visitDate DateTime  @default(now())
+  createdAt DateTime  @default(now())
+  church    Church    @relation(fields: [churchId], references: [id])
   churchId  String
 }
 
