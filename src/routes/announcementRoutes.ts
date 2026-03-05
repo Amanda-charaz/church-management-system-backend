@@ -1,16 +1,13 @@
-import { Router } from 'express'
-import { addAnnouncement, getAnnouncements, getAnnouncement, updateAnnouncement, deleteAnnouncement } from '../controllers/announcementController'
-import { protect, authorize } from '../middleware/protect'
+import express from "express"
+import { getAnnouncements, createAnnouncement } from "../controllers/announcementController"
+import { authenticate, authorize } from "../middleware/auth"
 
-const router = Router()
+const router = express.Router()
 
-router.use(protect)
+// PUBLIC
+router.get("/", getAnnouncements)
 
-// Only ADMIN and PASTOR can create, update, delete
-router.post('/', authorize('ADMIN', 'PASTOR'), addAnnouncement)
-router.get('/', getAnnouncements)
-router.get('/:id', getAnnouncement)
-router.put('/:id', authorize('ADMIN', 'PASTOR'), updateAnnouncement)
-router.delete('/:id', authorize('ADMIN'), deleteAnnouncement)
+// ADMIN ONLY
+router.post("/", authenticate, authorize("ADMIN", "PASTOR"), createAnnouncement)
 
 export default router

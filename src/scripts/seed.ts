@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 async function main() {
   // 1️⃣ Create church first
-const church = await prisma.church.create({
-  data: {
-    name: "Main Church",
-    address: "123 Church Street",
-  },
-});
+  const church = await prisma.church.create({
+    data: {
+      name: "Main Church",
+      address: "123 Church Street",
+    },
+  });
 
   // 2️⃣ Hash password
   const passwordHash = await bcrypt.hash("admin123", 10);
@@ -20,9 +20,10 @@ const church = await prisma.church.create({
     where: { email: "admin@church.com" },
     update: {},
     create: {
+      name: "Admin User",
       email: "admin@church.com",
       password: passwordHash,
-      role: Role.SUPER_ADMIN,
+      role: Role.ADMIN,
       church: {
         connect: { id: church.id },
       },
