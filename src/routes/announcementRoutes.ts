@@ -1,13 +1,16 @@
 import express from "express"
-import { getAnnouncements, createAnnouncement } from "../controllers/announcementController"
-import { authenticate, authorize } from "../middleware/auth"
+import {
+  getAnnouncements,
+  createAnnouncement,
+  updateAnnouncement,
+  deleteAnnouncement
+} from "../controllers/announcementController"
 
 const router = express.Router()
 
-// PUBLIC
 router.get("/", getAnnouncements)
-
-// ADMIN ONLY
-router.post("/", authenticate, authorize("ADMIN", "PASTOR"), createAnnouncement)
+router.post("/", createAnnouncement)
+router.put("/:id", updateAnnouncement)
+router.delete("/:id", deleteAnnouncement)
 
 export default router

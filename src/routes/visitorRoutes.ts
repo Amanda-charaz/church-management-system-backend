@@ -1,13 +1,16 @@
 import express from "express"
-import { createVisitor, getVisitors } from "../controllers/visitorController"
-import { authenticate, authorize } from "../middleware/auth"
+import {
+  getVisitors,
+  createVisitor,
+  updateVisitor,
+  deleteVisitor
+} from "../controllers/visitorController"
 
 const router = express.Router()
 
-// PUBLIC — visitors can register
+router.get("/", getVisitors)
 router.post("/", createVisitor)
-
-// STAFF ONLY
-router.get("/", authenticate, authorize("ADMIN", "PASTOR"), getVisitors)
+router.put("/:id", updateVisitor)
+router.delete("/:id", deleteVisitor)
 
 export default router
