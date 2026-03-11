@@ -6,6 +6,7 @@ import financeRoutes from "./routes/financeRoutes"
 import announcementRoutes from "./routes/announcementRoutes"
 import authRoutes from "./routes/authRoutes"
 import eventRoutes from "./routes/eventRoutes"
+import prayerRoutes from "./routes/prayerRoutes"
 
 const app = express()
 app.use(cors())
@@ -17,5 +18,6 @@ app.use("/api/finances", financeRoutes)
 app.use("/api/announcements", announcementRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/events", eventRoutes)
+app.use("/api/prayer", prayerRoutes)
 
 export default app
