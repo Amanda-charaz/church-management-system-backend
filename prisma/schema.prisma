@@ -17,6 +17,7 @@ model Church {
   finances      Finance[]
   announcements Announcement[]
   events        Event[]
+  prayerRequests PrayerRequest[]
 }
 
 model User {
@@ -85,6 +86,15 @@ model Event {
   createdAt   DateTime @default(now())
   church      Church   @relation(fields: [churchId], references: [id])
   churchId    String
+}
+model PrayerRequest {
+  id        String   @id @default(uuid())
+  name      String?
+  request   String
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+  church    Church   @relation(fields: [churchId], references: [id])
+  churchId  String
 }
 
 enum Role {
