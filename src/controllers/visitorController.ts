@@ -5,12 +5,20 @@ import { AuthRequest } from '../middleware/protect'
 export const addVisitor = async (req: AuthRequest, res: Response) => {
   try {
     const { firstName, lastName, phone, email, notes } = req.body
-    const churchId = req.user?.churchId
-
+    let churchId = req.user?.churchId
+    if (!churchId) {
+      const church = await prisma.church.findFirst({
+        where: { name: { not: undefined } },
+        orderBy: { name: 'asc' }
+      })
+      churchId = church?.id
+    }
+    if (!churchId) {
+      return res.status(400).json({ message: 'No church found' })
+    }
     const visitor = await prisma.visitor.create({
-      data: { firstName, lastName, phone, email, notes, churchId: churchId! }
+      data: { firstName, lastName, phone, email, notes, churchId }
     })
-
     res.status(201).json({ message: 'Visitor added successfully', visitor })
   } catch (error) {
     console.error('ADD VISITOR ERROR:', error)
