@@ -79,7 +79,44 @@ export const updateMember = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: 'Server error', error })
   }
 }
+export const selfRegisterMember = async (req: Request, res: Response) => {
+  try {
+    const { firstName, lastName, phone, email, address, department, baptized } = req.body
+    const church = await prisma.church.findFirst({
+      where: { name: { not: undefined } },
+      orderBy: { name: 'asc' }
+    })
+    if (!church) {
+      return res.status(400).json({ message: 'No church found' })
+    }
+    const member = await prisma.member.create({
+      data: {
+        firstName, lastName, phone, email, address,
+        department, baptized: baptized === true || baptized === 'true',
+        approved: false,
+        churchId: church.id
+      }
+    })
+    res.status(201).json({ message: 'Registration submitted successfully', member })
+  } catch (error) {
+    console.error('SELF REGISTER ERROR:', error)
+    res.status(500).json({ message: 'Server error', error })
+  }
+}
 
+export const approveMember = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params
+    const member = await prisma.member.update({
+      where: { id },
+      data: { approved: true }
+    })
+    res.json({ message: 'Member approved', member })
+  } catch (error) {
+    console.error('APPROVE MEMBER ERROR:', error)
+    res.status(500).json({ message: 'Server error', error })
+  }
+}
 export const deleteMember = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params
