@@ -3,7 +3,7 @@ import { getPrayerRequests, addPrayerRequest, updatePrayerStatus, deletePrayerRe
 import { protect } from "../middleware/protect"
 
 const router = express.Router()
-router.get("/", protect, getPrayerRequests)
+router.get("/", getPrayerRequests)
 router.post("/", addPrayerRequest)
 router.put("/:id", protect, updatePrayerStatus)
 router.delete("/:id", protect, deletePrayerRequest)
