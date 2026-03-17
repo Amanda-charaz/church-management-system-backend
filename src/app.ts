@@ -7,6 +7,7 @@ import announcementRoutes from "./routes/announcementRoutes"
 import authRoutes from "./routes/authRoutes"
 import eventRoutes from "./routes/eventRoutes"
 import prayerRoutes from "./routes/prayerRoutes"
+import verseRoutes from './routes/verseRoutes'
 
 const app = express()
 app.use(cors())
@@ -19,5 +20,6 @@ app.use("/api/announcements", announcementRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/events", eventRoutes)
 app.use("/api/prayer", prayerRoutes)
+app.use('/api/verse', verseRoutes)
 
 export default app

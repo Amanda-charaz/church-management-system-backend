@@ -1,10 +1,7 @@
-import { Router } from 'express'
-import { getDailyVerse } from '../controllers/verseController'
-import { protect } from '../middleware/protect'
+import express from 'express'
+import { getVerse } from '../controllers/verseController'
 
-const router = Router()
-
-// Any logged in user can see the daily verse
-router.get('/', protect, getDailyVerse)
+const router = express.Router()
+router.get('/', getVerse)
 
 export default router
