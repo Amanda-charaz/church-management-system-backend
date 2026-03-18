@@ -1,7 +1,7 @@
 import express from 'express'
-import { getVerse } from '../controllers/verseController'
+import { getDailyVerse } from '../controllers/verseController'
 
 const router = express.Router()
-router.get('/', getVerse)
+router.get('/', getDailyVerse)
 
 export default router
