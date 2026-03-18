@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes"
 import eventRoutes from "./routes/eventRoutes"
 import prayerRoutes from "./routes/prayerRoutes"
 import verseRoutes from './routes/verseRoutes'
+import cellGroupRoutes from './routes/cellGroupRoutes'
 
 const app = express()
 app.use(cors())
@@ -21,5 +22,6 @@ app.use("/api/auth", authRoutes)
 app.use("/api/events", eventRoutes)
 app.use("/api/prayer", prayerRoutes)
 app.use('/api/verse', verseRoutes)
+app.use('/api/cellgroups', cellGroupRoutes)
 
 export default app

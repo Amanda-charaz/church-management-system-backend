@@ -18,6 +18,7 @@ model Church {
   announcements Announcement[]
   events        Event[]
   prayerRequests PrayerRequest[]
+  cellGroups   CellGroup[]
 }
 
 model User {
@@ -98,6 +99,17 @@ model PrayerRequest {
   createdAt DateTime @default(now())
   church    Church   @relation(fields: [churchId], references: [id])
   churchId  String
+}
+model CellGroup {
+  id          String   @id @default(uuid())
+  name        String
+  leader      String
+  location    String?
+  meetingDay  String?
+  meetingTime String?
+  createdAt   DateTime @default(now())
+  church      Church   @relation(fields: [churchId], references: [id])
+  churchId    String
 }
 
 enum Role {
