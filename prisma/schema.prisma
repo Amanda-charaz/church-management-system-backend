@@ -19,6 +19,7 @@ model Church {
   events        Event[]
   prayerRequests PrayerRequest[]
   cellGroups   CellGroup[]
+  sermons     Sermon[]
 }
 
 model User {
@@ -111,7 +112,17 @@ model CellGroup {
   church      Church   @relation(fields: [churchId], references: [id])
   churchId    String
 }
-
+model Sermon {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  videoUrl    String?
+  preacher    String?
+  createdAt   DateTime @default(now())
+  church      Church   @relation(fields: [churchId], references: [id])
+  churchId    String
+}
 enum Role {
   ADMIN
   PASTOR

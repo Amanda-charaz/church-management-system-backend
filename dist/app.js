@@ -1,0 +1,30 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const memberRoutes_1 = __importDefault(require("./routes/memberRoutes"));
+const visitorRoutes_1 = __importDefault(require("./routes/visitorRoutes"));
+const financeRoutes_1 = __importDefault(require("./routes/financeRoutes"));
+const announcementRoutes_1 = __importDefault(require("./routes/announcementRoutes"));
+const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
+const eventRoutes_1 = __importDefault(require("./routes/eventRoutes"));
+const prayerRoutes_1 = __importDefault(require("./routes/prayerRoutes"));
+const verseRoutes_1 = __importDefault(require("./routes/verseRoutes"));
+const cellGroupRoutes_1 = __importDefault(require("./routes/cellGroupRoutes"));
+const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
+app.use("/api/members", memberRoutes_1.default);
+app.use("/api/visitors", visitorRoutes_1.default);
+app.use("/api/finances", financeRoutes_1.default);
+app.use("/api/announcements", announcementRoutes_1.default);
+app.use("/api/auth", authRoutes_1.default);
+app.use("/api/events", eventRoutes_1.default);
+app.use("/api/prayer", prayerRoutes_1.default);
+app.use('/api/verse', verseRoutes_1.default);
+app.use('/api/cellgroups', cellGroupRoutes_1.default);
+exports.default = app;
+//# sourceMappingURL=app.js.map

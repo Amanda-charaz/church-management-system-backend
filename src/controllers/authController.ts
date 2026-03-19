@@ -62,3 +62,20 @@ export const login = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error', error })
   }
 }
+export const changePassword = async (req: AuthRequest, res: Response) => {
+  try {
+    const { currentPassword, newPassword } = req.body
+    const user = await prisma.user.findUnique({ where: { id: req.user?.id } })
+    if (!user) return res.status(404).json({ message: 'User not found' })
+
+    const isMatch = await bcryptjs.compare(currentPassword, user.password)
+    if (!isMatch) return res.status(400).json({ message: 'Current password is incorrect' })
+
+    const hashed = await bcryptjs.hash(newPassword, 10)
+    await prisma.user.update({ where: { id: user.id }, data: { password: hashed } })
+
+    res.json({ message: 'Password changed successfully' })
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error })
+  }
+}
