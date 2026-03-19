@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import prisma from '../lib/prisma'
+import { AuthRequest } from '../middleware/protect'
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -65,13 +66,13 @@ export const login = async (req: Request, res: Response) => {
 export const changePassword = async (req: AuthRequest, res: Response) => {
   try {
     const { currentPassword, newPassword } = req.body
-    const user = await prisma.user.findUnique({ where: { id: req.user?.id } })
+    const user = await prisma.user.findUnique({ where: { id: req.user?.userId } })
     if (!user) return res.status(404).json({ message: 'User not found' })
 
-    const isMatch = await bcryptjs.compare(currentPassword, user.password)
+    const isMatch = await bcrypt.compare(currentPassword, user.password)
     if (!isMatch) return res.status(400).json({ message: 'Current password is incorrect' })
 
-    const hashed = await bcryptjs.hash(newPassword, 10)
+    const hashed = await bcrypt.hash(newPassword, 10)
     await prisma.user.update({ where: { id: user.id }, data: { password: hashed } })
 
     res.json({ message: 'Password changed successfully' })
